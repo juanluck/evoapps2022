@@ -31,7 +31,7 @@ endfunction
 
 function [bM, valBest]=optimization(model,constraints,benchmark)
     NP=140;
-    itermax=2;
+    itermax=1000;
     F=0.5;
     CR=0.9;
     

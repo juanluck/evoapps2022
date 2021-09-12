@@ -1,4 +1,4 @@
-all: build clean prepare start
+all: clean build prepare start
 
 build:
 	docker build -t scilab .
@@ -13,7 +13,7 @@ prepare:
 	mkdir Results
 	mkdir outputs
 
-startParamEstimation:
+start:
 	python3 execDockers.py &> output_python
 
 archive:

@@ -15,7 +15,7 @@ nbench=args(8)
 //disp(nmodel)
 //disp(nbench)
 
-// Defining the model to test
+// Defining the models to test
 model=modelRIM_K_L;
 constraints=constRIM_K_L;
 if strcmp(nmodel,"RIM_K_L")==0 then 
@@ -24,16 +24,37 @@ if strcmp(nmodel,"RIM_K_L")==0 then
 elseif strcmp(nmodel,"RIM_Kir_K_L")==0 then 
 	model=modelRIM_Kir_K_L;
 	constraints=constRIM_Kir_K_L;
+elseif strcmp(nmodel,"RIM_Cat_K_L")==0 then 
+	model=modelRIM_Cat_K_L;
+	constraints=constRIM_Cat_K_L;
+elseif strcmp(nmodel,"RIM_Cap_K_L")==0 then 
+	model=modelRIM_Cap_K_L;
+	constraints=constRIM_Cap_K_L;
+elseif strcmp(nmodel,"RIM_Cat_Kir_K_L")==0 then 
+	model=modelRIM_Cat_Kir_K_L;
+	constraints=constRIM_Cat_Kir_K_L;
+elseif strcmp(nmodel,"RIM_Cap_Kir_K_L")==0 then 
+	model=modelRIM_Cap_Kir_K_L;
+	constraints=constRIM_Cap_Kir_K_L;
 end
 
-// Defining the benchmark
+// Defining the benchmarks
 benchmark=benchmarkRIM_K_L;
 if strcmp(nbench,"RIM_K_L")==0 then 
 	benchmark=benchmarkRIM_K_L;
 elseif strcmp(nbench,"RIM_Kir_K_L")==0 then 
 	benchmark=benchmarkRIM_Kir_K_L;
+elseif strcmp(nbench,"RIM_Cat_K_L")==0 then 
+	benchmark=benchmarkRIM_Cat_K_L;
+elseif strcmp(nbench,"RIM_Cap_K_L")==0 then 
+	benchmark=benchmarkRIM_Cap_K_L;
+elseif strcmp(nbench,"RIM_Cat_Kir_K_L")==0 then 
+	benchmark=benchmarkRIM_Cat_Kir_K_L;
+elseif strcmp(nbench,"RIM_Cap_Kir_K_L")==0 then 
+	benchmark=benchmarkRIM_Cap_Kir_K_L;
 end
 
+// Calling the optimization procedure
 [bM,valBest]=optimization(model,constraints,benchmark);
 
 csvWrite(valBest,"./Results/result.csv")

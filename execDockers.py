@@ -3,17 +3,18 @@ import multiprocessing
 import time
 import csv
 
-#scilab-cli -nb -f main.sce -args 1 RIM_K_L RIM_K_L
-#docker run --name scilab1 --rm  -v $(pwd)/Results/modRIM_K_LbenchRIM_K_L_1:/Results scilab scilab-cli -nb -f main.sce -args 1 RIM_K_L RIM_K_L
-
 def nbContainers():
 	result=run("docker ps -aq | wc -l", shell=True, stdout=PIPE).stdout.decode('utf-8')
 	return int(result)-1
 
-models = ["RIM_K_L","RIM_Kir_K_L"]
-benchmarks = ["RIM_K_L"]
+models = ["RIM_K_L","RIM_Kir_K_L","RIM_Cap_K_L","RIM_Cap_Kir_K_L"]
+benchmarks = ["RIM_K_L","RIM_Kir_K_L","RIM_Cap_K_L","RIM_Cap_Kir_K_L"]
+
+#models = ["RIM_K_L"]
+#benchmarks = ["RIM_K_L"]
+
 nbCpus = multiprocessing.cpu_count()
-maxExp = 1
+maxExp = 30
 simId = 0
 
 for model in models:
