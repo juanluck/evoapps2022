@@ -27,6 +27,7 @@ for model in models:
 			Popen(command, shell = True)
 			noExp += 1
 			simId += 1
+			time.sleep(2)
 			
 			# Loop if the current number of running containers is greater or equal than the number of available cpus
 			while nbCpus <= nbContainers():
