@@ -1,5 +1,5 @@
-//currentDate = getdate()
-//rand('seed',getdate('s')+currentDate(10))
+currentDate = getdate()
+rand('seed',getdate('s')+currentDate(10))
 
 args=sciargs();
 
