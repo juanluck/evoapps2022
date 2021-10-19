@@ -1,3 +1,5 @@
 .Rhistory
 Results/
 output_python
+*.pdf
+.directory

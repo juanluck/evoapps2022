@@ -75,28 +75,70 @@ function [benchmark]=benchmarkRIM_K_L()
         x=ode(condini,t0,t,HH22); 
         V=x(1,:);
         benchmark(i,:)=V;
-        //plot(t,V)
+        //plot(t,V,'k')
     end
-    //plot(t,benchmark)
+    //p=get("hdl"); //get handle on current entity (here the polyline entity)
 endfunction
 
-function [benchmark]=testRIM_K_L()
+function [benchmark]=bestFoundRIM_K_L_is_Cap_K_L()
     stimuli=[-15:5:35];
     t0=0;
     t=linspace(0,50,10000);
     
-    param= [21.083093 0.1 -88.573866 -45.691763 -30.376532 -54.564006 18.268357 -1 7.7835852 5.3024838 0.1717049 0.001 7.1340489];  
-    condini = [-38; param(11); param(12)]
+    param= [0.10081129099719248 11.663416090251854 0.26542537751326151 20.875869879311576 -97.733183085078736 -35.380208129884657 -22.057780108180836 -75.858942339037583 -84.291424914336531 11.139871872905655 17.259349126500496 -7.9561737110379411 1.0530017463452479 14.563328351015672 1.0170705215369544 0.94754193300821232 0.89777160195738892 0.0066028365187863055 0.0084733124700737822];    
+    condini = [-38; param(16); param(17); param(18)]
     benchmark=zeros(11,length(t));
     for i=1:11
         I=stimuli(i);
-        x=ode(condini,t0,t,HH22); 
+        x=ode(condini,t0,t,HH21); 
         V=x(1,:);
         benchmark(i,:)=V;
-        //plot(t,V)
-    end
-    //plot(t,benchmark)
+        //plot(t,V);
+    end   
 endfunction
+
+
+function plotRIM_K_L(plotSolution)
+    if ~exists("plotSolution","local") then
+         plotSolution = %F;
+    end
+  
+    stimuli=[-15:5:35];
+    t=linspace(0,50,10000)
+    
+    benchmark = benchmarkRIM_K_L();
+    model     = bestFoundRIM_K_L_is_Cap_K_L();
+    
+    clf();
+    p=gca();
+    
+    p.foreground=1;
+    p.thickness=4;
+    p.mark_style=9;
+    plot(t,benchmark,'c-')
+    f=gcf();
+    f.figure_size = [600 730];
+    f.children.margins(2)=0.02;
+
+    if plotSolution then
+        p.foreground=0;
+        //p.thickness=1;
+        p.mark_style=9;
+        plot(t,model,'k-');
+        f=gcf();
+        f.children.children(1).children.line_style=3;
+        f.children.children(1).children.thickness=2;
+        title('$Benchmark: I_K+I_L \quad vs. \quad\\ Model: I_{Ca,p}+I_K+I_L$','fontsize',5)
+        //legend(['$Benchmark$';'$Model$'],1)
+    else
+        title('$Benchmark: \quad I_K+I_L$','fontsize',5)
+    end   
+        xlabel('$t(10^{-1}s)$','fontsize',5);
+        ylabel('$V(t)$','fontsize',5);
+endfunction
+
+
+
 
 
 
@@ -141,6 +183,65 @@ function [benchmark]=benchmarkRIM_Kir_K_L()
 
 endfunction
 
+function [benchmark]=bestFoundRIM_Kir_K_L_is_Kir_K_L()
+     stimuli=[-15:5:35];
+    t0=0;
+    t=linspace(0,50,10000);
+    
+    param= [2.8589173052423957 29.368810088189136 0.41639554636034126 -99.92184324021737 -10.838110278000391 -89.583378585367399 -90 -89.532956382148598 -19.196183779722077 29.779767179173795 -1.9252760809973912 13.946556719694435 1 0.60834387805019263 0.0010228998482015852 0.04304406049447413];    
+    condini = [-38; param(14); param(15)]
+    benchmark=zeros(11,length(t));
+    for i=1:11
+        I=stimuli(i);
+        x=ode(condini,t0,t,HH22_Kir_K_L); 
+        V=x(1,:);
+        benchmark(i,:)=V;
+        //plot(t,V)
+    end
+    //plot(t,benchmark
+    
+endfunction
+
+function plotRIM_Kir_K_L(plotSolution)
+    if ~exists("plotSolution","local") then
+         plotSolution = %F;
+    end
+  
+    stimuli=[-15:5:35];
+    t=linspace(0,50,10000)
+    
+    benchmark = benchmarkRIM_Kir_K_L();
+    model     = bestFoundRIM_Kir_K_L_is_Kir_K_L();
+    
+    clf();
+    p=gca();
+    
+    p.foreground=1;
+    p.thickness=4;
+    p.mark_style=9;
+    plot(t,benchmark,'c-')
+    f=gcf();
+    f.figure_size = [600 730];
+    f.children.margins(2)=0.02;
+
+    if plotSolution then
+        p.foreground=0;
+        //p.thickness=1;
+        p.mark_style=9;
+        plot(t,model,'k-');
+        f=gcf();
+        f.children.children(1).children.line_style=3;
+        f.children.children(1).children.thickness=2;
+        title('$Benchmark: I_{Kir}+I_K+I_L \quad vs. \quad\\ Model: I_{Kir}+I_K+I_L$','fontsize',5)
+        //legend(['$Benchmark$';'$Model$'],1)
+    else
+        title('$Benchmark: \quad  I_{Kir}+I_K+I_L$','fontsize',5)
+    end   
+        xlabel('$t(10^{-1}s)$','fontsize',5);
+        ylabel('$V(t)$','fontsize',5);
+endfunction
+
+
 ////////////////////////////////////////////////////////
 // Benchmark model RIM Ca,t K L
 ////////////////////////////////////////////////////////
@@ -183,6 +284,64 @@ function [benchmark]=benchmarkRIM_Cap_K_L()
         //plot(t,V)
     end
     //plot(t,benchmark)
+endfunction
+
+function [benchmark]=bestFoundRIM_Cap_K_L_is_Cap_K_L()
+    stimuli=[-15:5:35];
+    t0=0;
+    t=linspace(0,50,10000);
+    
+    param= [0.29538475249939389 6.8114415303100859 0.19893062589878874 43.484510532253267 -99.909642681038449 -67.019170956016168 -3.4346174692778852 -54.379751129048806 -89.053126650623199 29.441379229735755 22.655334008987779 -1.8469563919744758 0.20430872662732819 2.4340822704369738 14.396894123918731 0.27863006785178757 0.99724602712054577 0.0019447319352347292 0.032849105268709017];    
+    condini = [-38; param(16); param(17); param(18)]
+    benchmark=zeros(11,length(t));
+    for i=1:11
+        I=stimuli(i);
+        x=ode(condini,t0,t,HH21); 
+        V=x(1,:);
+        benchmark(i,:)=V;
+        //plot(t,V)
+    end
+    //plot(t,benchmark)
+endfunction
+
+
+function plotRIM_Cap_K_L(plotSolution)
+    if ~exists("plotSolution","local") then
+         plotSolution = %F;
+    end
+  
+    stimuli=[-15:5:35];
+    t=linspace(0,50,10000)
+    
+    benchmark = benchmarkRIM_Cap_K_L();
+    model     = bestFoundRIM_Cap_K_L_is_Cap_K_L();
+    
+    clf();
+    p=gca();
+    
+    p.foreground=1;
+    p.thickness=4;
+    p.mark_style=9;
+    plot(t,benchmark,'c-');
+    f=gcf();
+    f.figure_size = [600 730];
+    f.children.margins(2)=0.02;
+
+    if plotSolution then
+        p.foreground=0;
+        //p.thickness=1;
+        p.mark_style=9;
+        plot(t,model,'k-');
+        f=gcf();
+        f.children.children(1).children.line_style=3;
+        f.children.children(1).children.thickness=2;
+        title('$Benchmark: I_{Ca,p}+I_K+I_L \quad vs. \quad\\ Model:  I_{Ca,p}+I_K+I_L$','fontsize',5);
+        //legend(['$Benchmark$';'$Model$'],1)
+    else
+        title('$Benchmark: \quad I_{Ca,p}+I_K+I_L$','fontsize',5)
+    end   
+        xlabel('$t(10^{-1}s)$','fontsize',5);
+        ylabel('$V(t)$','fontsize',5);
 endfunction
 
 
@@ -229,4 +388,63 @@ function [benchmark]=benchmarkRIM_Cap_Kir_K_L()
     end
     //plot(t,benchmark)
 endfunction
+
+
+function [benchmark]=bestFoundRIM_Cap_Kir_K_L_is_Cap_Kir_K_L()
+    stimuli=[-15:5:35];
+    t0=0;
+    t=linspace(0,50,10000);
+    
+    param= [0.28194480066472999 0.3629941334440131 0.10000000000000092 0.23565162258260272 66.916420143873182 -99.120867483304551 -75.266815972228599 -13.018186452380045 -90 -17.649141234189738 -18.730621009811976 28.555549999949505 -1.2083985275133826 1.9499502620021651 -3.8865297203138178 0.18700000186388682 0.040925646657574283 4.9076914307656727 0.26165548212512507 0.054284485063274796 0.16960424432337129 0.027188874598529693];    
+    condini = [-38; param(19); param(20); param(21)]
+    benchmark=zeros(11,length(t));
+    for i=1:11
+        I=stimuli(i);
+        x=ode(condini,t0,t,HH11_Cap_Kir_K_L); 
+        V=x(1,:);
+        benchmark(i,:)=V;
+        //plot(t,V)
+    end
+    //plot(t,benchmark)
+endfunction
+
+function plotRIM_Cap_Kir_K_L(plotSolution)
+    if ~exists("plotSolution","local") then
+         plotSolution = %F;
+    end
+  
+    stimuli=[-15:5:35];
+    t=linspace(0,50,10000)
+    
+    benchmark = benchmarkRIM_Cap_Kir_K_L();
+    model     = bestFoundRIM_Cap_Kir_K_L_is_Cap_Kir_K_L();
+    
+    clf();
+    p=gca();
+    
+    p.foreground=1;
+    p.thickness=4;
+    p.mark_style=9;
+    plot(t,benchmark,'c-');
+    f=gcf();
+    f.figure_size = [600 730];
+    f.children.margins(2)=0.02;
+
+    if plotSolution then
+        p.foreground=0;
+        //p.thickness=1;
+        p.mark_style=9;
+        plot(t,model,'k-');
+        f=gcf();
+        f.children.children(1).children.line_style=3;
+        f.children.children(1).children.thickness=2;
+        title('$Benchmark: I_{Ca,p}+I_{Kir}+I_K+I_L \quad vs. \quad\\ Model:  I_{Ca,p}+I_{Kir}+I_K+I_L$','fontsize',5)
+        //legend(['$Benchmark$';'$Model$'],1)
+    else
+        title('$Benchmark: \quad I_{Ca,p}+I_{Kir}+I_K+I_L$','fontsize',5)
+    end   
+        xlabel('$t(10^{-1}s)$','fontsize',5);
+        ylabel('$V(t)$','fontsize',5);   
+endfunction
+
 
